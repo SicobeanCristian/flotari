@@ -1,0 +1,8 @@
+{
+  "name": "flotari",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/counter.test.mjs"
+  }
+}

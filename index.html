@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111310">
+  <title>Flotări pentru minute</title>
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="home">
+    <p id="blocked" class="banner" hidden>Timpul s-a terminat. Câștigă minute ca să continui.</p>
+
+    <section class="balance">
+      <p class="label">Minute disponibile</p>
+      <p id="balance" class="big">0</p>
+      <p id="balanceDetail" class="muted"></p>
+    </section>
+
+    <button id="startWorkout" class="primary">Fă flotări</button>
+
+    <section>
+      <h2>Deblochează</h2>
+      <div id="unlockButtons" class="row"></div>
+      <p id="unlockHint" class="muted"></p>
+    </section>
+
+    <section>
+      <h2>Ultimele 7 zile</h2>
+      <table>
+        <thead><tr><th>Zi</th><th>Flotări</th><th>Minute folosite</th></tr></thead>
+        <tbody id="history"></tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Reguli</h2>
+      <label>Flotări necesare <input id="repsPerBlock" type="number" inputmode="numeric" min="1" max="200"></label>
+      <label>Minute câștigate <input id="minutesPerBlock" type="number" inputmode="numeric" min="1" max="120"></label>
+      <label>Minute gratuite pe zi <input id="dailyFree" type="number" inputmode="numeric" min="0" max="600"></label>
+    </section>
+
+    <details>
+      <summary>Configurare pe iPhone</summary>
+      <p class="muted">Numele sunt cele din iOS în engleză. Pe un telefon în română pot diferi puțin, dar le găsești la fel, căutând în Scurtături.</p>
+
+      <h3>1. Scurtătura „Deblocare”</h3>
+      <p>În aplicația Shortcuts apasă +, numește scurtătura exact <b>Deblocare</b> și adaugă, în ordine:</p>
+      <ol>
+        <li><b>Adjust Date</b>: Add, valoarea <i>Shortcut Input</i>, minutes, la <i>Current Date</i>.</li>
+        <li><b>Format Date</b>: <i>Adjusted Date</i>, Date Format: Custom, <code>yyyy-MM-dd HH:mm:ss</code>.</li>
+        <li><b>Save File</b>: <i>Formatted Date</i>, Ask Where to Save oprit, Subpath <code>deblocat.txt</code>, Overwrite pornit.</li>
+      </ol>
+      <p>Apoi apasă butonul de mai jos. Trebuie să apară fișierul, iar scurtătura să se termine fără erori.</p>
+      <button id="testShortcut" class="secondary">Testează scurtătura</button>
+
+      <h3>2. Automatizarea care blochează</h3>
+      <p>În Shortcuts, fila Automation, apasă +, alege <b>App</b>, selectează aplicațiile limitate, bifează <b>Is Opened</b> și <b>Run Immediately</b>. Apoi adaugă:</p>
+      <ol>
+        <li><b>Get File from Folder</b>: folderul Shortcuts, calea <code>deblocat.txt</code>.</li>
+        <li><b>Get Dates from Input</b>: din <i>File</i>.</li>
+        <li><b>If</b>: <i>Current Date</i> is after <i>Dates</i>.</li>
+        <li>În interiorul lui If, <b>Open URLs</b>: <code id="blockUrl"></code></li>
+      </ol>
+
+      <h3>3. Scurtătura pe ecran</h3>
+      <p>Din Safari: Partajează, apoi Adaugă pe ecranul principal.</p>
+    </details>
+  </main>
+
+  <main id="workout" hidden>
+    <div class="stage">
+      <video id="video" playsinline muted></video>
+      <canvas id="overlay"></canvas>
+      <p id="reps" class="reps">0</p>
+      <p id="hint" class="hint">Se pregătește camera...</p>
+    </div>
+    <p id="earned" class="muted center"></p>
+    <button id="stopWorkout" class="primary">Gata</button>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
