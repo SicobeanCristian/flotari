@@ -1,7 +1,7 @@
 import { PushupCounter } from "./counter.mjs";
 
 const STORE_KEY = "flotari.v1";
-const UNLOCK_OPTIONS = [5, 10, 20];
+const UNLOCK_OPTIONS = [1, 5, 10, 20];
 const SKELETON = [[11, 13], [13, 15], [12, 14], [14, 16], [11, 23], [12, 24], [23, 25], [25, 27], [24, 26], [26, 28]];
 
 const $ = (id) => document.getElementById(id);
@@ -13,7 +13,7 @@ function dayKey(date = new Date()) {
 
 function loadState() {
   const empty = {
-    settings: { repsPerBlock: 10, minutesPerBlock: 10, dailyFree: 30 },
+    settings: { repsPerBlock: 5, minutesPerBlock: 1, dailyFree: 30 },
     earned: 0,
     days: {},
   };
@@ -45,8 +45,13 @@ function freeLeft() {
   return Math.max(state.settings.dailyFree - today().freeUsed, 0);
 }
 
+// Fracțiile adunate (0.2 + 0.2 ...) pot da 2.9999999 în loc de 3.
+function wholeMinutes(value) {
+  return Math.floor(value + 1e-9);
+}
+
 function available() {
-  return Math.floor(freeLeft() + state.earned);
+  return wholeMinutes(freeLeft() + state.earned);
 }
 
 function addRep() {
@@ -74,7 +79,7 @@ function runShortcut(minutes) {
 function renderHome() {
   $("balance").textContent = available();
   $("balanceDetail").textContent =
-    `${Math.floor(freeLeft())} gratuite azi + ${Math.floor(state.earned)} câștigate`;
+    `${wholeMinutes(freeLeft())} gratuite azi + ${wholeMinutes(state.earned)} câștigate`;
 
   const total = available();
   const buttons = UNLOCK_OPTIONS.map((minutes) => {

@@ -80,7 +80,7 @@ button:disabled { opacity: .35; cursor: default; }
   border: 1px solid var(--line);
 }
 .row { display: flex; gap: 10px; margin-bottom: 8px; }
-.row button { flex: 1; }
+.row button { flex: 1; padding-inline: 4px; }
 
 table { width: 100%; border-collapse: collapse; font-size: 15px; }
 th, td { padding: 8px 0; border-bottom: 1px solid var(--line); text-align: right; font-variant-numeric: tabular-nums; }
